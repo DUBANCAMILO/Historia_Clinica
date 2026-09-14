@@ -1,0 +1,124 @@
+<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Core Shapes for Reusability -->
+    <path id="kidneyShape" d="M 50,20 C 80,20 95,45 85,75 C 75,100 40,100 25,80 C 25,65 35,60 40,50 C 35,40 25,35 25,25 C 25,15 40,20 50,20 Z" />
+    <path id="tubeBehind" d="M 20,50 C 10,25 35,5 55,15 C 75,22 95,25 92,45" />
+    <path id="tubeFront" d="M 92,45 C 89,65 60,75 45,80 C 25,85 25,105 45,105 C 65,105 75,95 84,84" />
+    <path id="crossShape" d="M 20,16 h 4 v 4 h 4 v 4 h -4 v 4 h -4 v -4 h -4 v -4 h 4 z" />
+
+    <!-- Clip Paths -->
+    <clipPath id="kidneyClip">
+      <use href="#kidneyShape" />
+    </clipPath>
+
+    <!-- Gradients -->
+    <linearGradient id="kidneyGrad" x1="20%" y1="10%" x2="80%" y2="90%">
+      <stop offset="0%" stop-color="#1976d2" />
+      <stop offset="100%" stop-color="#0f2a44" />
+    </linearGradient>
+
+    <linearGradient id="metalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="50%" stop-color="#b0bec5" />
+      <stop offset="100%" stop-color="#78909c" />
+    </linearGradient>
+
+    <linearGradient id="chestGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1976d2" />
+      <stop offset="100%" stop-color="#0f2a44" />
+    </linearGradient>
+
+    <linearGradient id="crossGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#e3f2fd" />
+    </linearGradient>
+
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1976d2" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#1976d2" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Patterns & Filters -->
+    <pattern id="dots" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
+      <circle cx="1.5" cy="1.5" r="0.5" fill="#1976d2" opacity="0.15" />
+    </pattern>
+
+    <filter id="blurSoft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1.5" />
+    </filter>
+  </defs>
+
+  <!-- Atmospheric Background -->
+  <rect width="120" height="120" fill="url(#dots)" />
+  <circle cx="60" cy="60" r="55" fill="url(#bgGlow)" />
+
+  <!-- Behind Tubing Layer -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Isometric Shadow / Extrusion -->
+    <use href="#tubeBehind" stroke="#071522" stroke-width="7" transform="translate(1, 2)" opacity="0.8" />
+    <!-- Main Tube -->
+    <use href="#tubeBehind" stroke="#1976d2" stroke-width="6" />
+    <!-- Specular Highlight -->
+    <use href="#tubeBehind" stroke="#64b5f6" stroke-width="1.5" transform="translate(-0.5, -0.5)" opacity="0.9" />
+  </g>
+
+  <!-- Kidney Layer -->
+  <g>
+    <!-- Isometric Block Shadow -->
+    <use href="#kidneyShape" transform="translate(2, 3)" fill="#071522" opacity="0.9" />
+    <!-- Main Kidney Body -->
+    <use href="#kidneyShape" fill="url(#kidneyGrad)" />
+  </g>
+
+  <!-- Kidney Inner Highlights (Volumetric 3D Effect) -->
+  <g clip-path="url(#kidneyClip)">
+    <!-- Top-Left Rim Light -->
+    <use href="#kidneyShape" transform="translate(-2, -2)" stroke="#64b5f6" stroke-width="3" fill="none" opacity="0.6" filter="url(#blurSoft)" />
+    <!-- Bottom-Right Core Shadow -->
+    <use href="#kidneyShape" transform="translate(3, 4)" stroke="#071522" stroke-width="5" fill="none" opacity="0.7" filter="url(#blurSoft)" />
+  </g>
+
+  <!-- Front Tubing Layer -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Drop Shadow over Kidney -->
+    <use href="#tubeFront" stroke="#071522" stroke-width="7" transform="translate(1, 2)" opacity="0.6" />
+    <!-- Main Tube -->
+    <use href="#tubeFront" stroke="#1976d2" stroke-width="6" />
+    <!-- Specular Highlight -->
+    <use href="#tubeFront" stroke="#64b5f6" stroke-width="1.5" transform="translate(-0.5, -0.5)" opacity="0.9" />
+  </g>
+
+  <!-- Stethoscope Chest Piece Assembly -->
+  <g>
+    <!-- Metal Connecting Stem -->
+    <line x1="82" y1="82" x2="88" y2="88" stroke="#071522" stroke-width="5" transform="translate(1, 2)" stroke-linecap="round" opacity="0.7" />
+    <line x1="82" y1="82" x2="88" y2="88" stroke="url(#metalGrad)" stroke-width="4" stroke-linecap="round" />
+
+    <!-- Chest Piece Isometric Stack -->
+    <!-- Base Shadow -->
+    <ellipse cx="92" cy="95" rx="15" ry="11" fill="#071522" opacity="0.8" />
+    <!-- Lower Navy Rim -->
+    <ellipse cx="92" cy="94" rx="15" ry="11" fill="#0f2a44" />
+    <!-- Metallic Bezel -->
+    <ellipse cx="92" cy="92" rx="15" ry="11" fill="url(#metalGrad)" />
+    <!-- Inner Diaphragm -->
+    <ellipse cx="92" cy="92" rx="11" ry="7" fill="url(#chestGrad)" />
+    <!-- Diaphragm Inner Shadow -->
+    <ellipse cx="92" cy="92.5" rx="11" ry="7" fill="none" stroke="#071522" stroke-width="1" opacity="0.5" />
+    <!-- Center Detail -->
+    <ellipse cx="92" cy="92" rx="3" ry="2" fill="#0f2a44" />
+  </g>
+
+  <!-- Medical Cross Accent -->
+  <g>
+    <!-- Cross Shadow -->
+    <use href="#crossShape" transform="translate(1, 2)" fill="#071522" opacity="0.7" />
+    <!-- Cross Main -->
+    <use href="#crossShape" fill="url(#crossGrad)" />
+  </g>
+
+  <!-- Floating Clinic Particles (Depth & Polish) -->
+  <circle cx="15" cy="75" r="1.5" fill="#64b5f6" opacity="0.6" />
+  <circle cx="105" cy="35" r="1" fill="#ffffff" opacity="0.5" />
+  <circle cx="85" cy="12" r="2" fill="#1976d2" opacity="0.4" />
+</svg>
