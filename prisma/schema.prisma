@@ -1,0 +1,126 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Sex {
+  M
+  F
+  O
+  U
+}
+
+enum AlertType {
+  critical
+  warning
+  info
+}
+
+model Patient {
+  id          String            @id @default(uuid()) @db.Uuid
+  document    String            @unique @db.VarChar(30)
+  fullName    String            @db.VarChar(180)
+  birthDate   DateTime?         @db.Date
+  sex         Sex               @default(U)
+  phone       String?           @db.VarChar(30)
+  eps         String?           @db.VarChar(120)
+  city        String?           @db.VarChar(100)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  histories   ClinicalHistory[]
+
+  @@index([fullName])
+  @@map("patients")
+}
+
+model ClinicalHistory {
+  id              String       @id @default(uuid()) @db.Uuid
+  historyNumber   String       @unique @db.VarChar(40)
+  patientId       String       @db.Uuid
+  patient         Patient      @relation(fields: [patientId], references: [id], onDelete: Restrict)
+  consultationAt  DateTime
+  companion       String?      @db.VarChar(180)
+  reason          String?      @db.Text
+  currentIllness  String?      @db.Text
+  nephrotoxic     String?      @db.Text
+  familyHistory   String?      @db.Text
+  weight          Decimal?     @db.Decimal(7, 2)
+  height          Decimal?     @db.Decimal(5, 2)
+  actualWeight    Decimal?     @db.Decimal(7, 2)
+  creatinine      Decimal?     @db.Decimal(8, 3)
+  bun             Decimal?     @db.Decimal(8, 3)
+  bloodPressure   String?      @db.VarChar(30)
+  heartRate       Int?
+  glucose         Decimal?     @db.Decimal(8, 2)
+  cardioExam      String?      @db.Text
+  abdominalExam   String?      @db.Text
+  labs            String?      @db.Text
+  additionalLabs  String?      @db.Text
+  icd10           String?      @db.VarChar(300)
+  analysis        String?      @db.Text
+  labPlan         String?      @db.Text
+  treatmentPlan   String?      @db.Text
+  additionalNotes String?      @db.Text
+  egfr            Decimal?     @db.Decimal(8, 2)
+  bmi             Decimal?     @db.Decimal(6, 2)
+  kdigo           String?      @db.VarChar(10)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  medications     Medication[]
+  alerts          RiskAlert[]
+  auditLogs       AuditLog[]
+
+  @@index([patientId, consultationAt])
+  @@index([consultationAt])
+  @@map("clinical_histories")
+}
+
+model Medication {
+  id          String          @id @default(uuid()) @db.Uuid
+  historyId   String          @db.Uuid
+  history     ClinicalHistory @relation(fields: [historyId], references: [id], onDelete: Cascade)
+  drug        String          @db.VarChar(180)
+  dose        String?         @db.VarChar(100)
+  quantity    String?         @db.VarChar(100)
+  route       String?         @db.VarChar(80)
+  frequency   String?         @db.VarChar(100)
+  duration    String?         @db.VarChar(100)
+  notes       String?         @db.Text
+
+  @@index([historyId])
+  @@map("medications")
+}
+
+model RiskAlert {
+  id          String          @id @default(uuid()) @db.Uuid
+  historyId   String          @db.Uuid
+  history     ClinicalHistory @relation(fields: [historyId], references: [id], onDelete: Cascade)
+  type        AlertType
+  category    String          @db.VarChar(100)
+  message     String          @db.Text
+  triggeredAt DateTime
+
+  @@index([historyId, type])
+  @@map("risk_alerts")
+}
+
+model AuditLog {
+  id         String           @id @default(uuid()) @db.Uuid
+  historyId  String?          @db.Uuid
+  history    ClinicalHistory? @relation(fields: [historyId], references: [id], onDelete: SetNull)
+  action     String           @db.VarChar(30)
+  entity     String           @db.VarChar(50)
+  entityId   String           @db.VarChar(80)
+  actor      String?          @db.VarChar(120)
+  beforeJson Json?
+  afterJson  Json?
+  createdAt  DateTime         @default(now())
+
+  @@index([entity, entityId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
