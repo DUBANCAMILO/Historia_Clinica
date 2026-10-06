@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Historia Clínica",
+  "version": "0.1.5",
+  "identifier": "co.nefrohc.desktop",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:4028",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../out"
+  },
+  "app": {
+    "windows": [{
+      "title": "Historia Clínica",
+      "width": 1440,
+      "height": 900,
+      "minWidth": 900,
+      "minHeight": 600,
+      "resizable": true,
+      "fullscreen": false,
+      "maximized": false
+    }],
+    "security": { "csp": null }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "nsis",
+    "windows": { "wix": { "language": "es-ES" } }
+  }
+}

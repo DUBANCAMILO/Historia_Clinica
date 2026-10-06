@@ -1,0 +1,2 @@
+DESKTOP_PACKAGE_V2
+No contiene rutas API de Next.js; preparado para exportación estática Tauri.

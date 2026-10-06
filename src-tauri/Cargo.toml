@@ -1,0 +1,20 @@
+[package]
+name = "historia-clinica-desktop"
+version = "0.1.5"
+description = "Sistema interno de historia clínica"
+authors = ["Historia Clinica"]
+edition = "2021"
+
+[lib]
+name = "historia_clinica_desktop_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rusqlite = { version = "0.32", features = ["bundled", "backup", "chrono"] }
+tauri-plugin-dialog = "2"
